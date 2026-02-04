@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input Form</title>
+    <script>
+
+    function checkForCookie(name) {
+        const value = "; " + document.cookie;
+        const parts = value.split("; ");
+        for (let i = 0; i < parts.length; i++) {
+            const cleanPart = parts[i].trim().split("=");
+            if (cleanPart[0] === name) {
+                return decodeURIComponent(cleanPart[1]);
+            }
+        }
+        return null;
+    }
+
+
+        let userEmail;
+
+        // Function to submit the email
+        function submitEmail() {
+            const email = document.getElementById('email').value;
+            userEmail = email; // Store the email for later use
+            fetch('http://localhost:8000/send_otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Function to submit the OTP along with the stored email
+        function submitOtp() {
+            const otp = document.getElementById('otp').value;
+            if (!/^\d{4}$/.test(otp)) {
+                alert('Please enter a valid 4-digit OTP.');
+                return false;
+            }
+            fetch('http://localhost:8000/verify_otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: userEmail, otp: otp }),
+            })
+        .then(response => response.json())
+        .then(data => {
+                if (data.message === "OTP verified successfully." ) { // Assuming the server responds with a 'success' property
+                    console.log('Success:', data);
+                    window.location.href = 'http://localhost:5500/frontend/login_page.html'; // Navigate to success page
+                } else {
+                    alert('OTP verification failed.'); // Show an error message
+                }
+            })
+        .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+
+<!-- Email Input -->
+<div>
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email" required><br>
+    <button onclick="submitEmail();">Submit Email</button>
+</div>
+
+<!-- 4-Digit OTP Input -->
+<div>
+    <label for="otp">4-Digit OTP:</label><br>
+    <input type="text" id="otp" name="otp" pattern="\d{4}" title="Please enter exactly 4 digits." required><br>
+    <button onclick="submitOtp();">Submit OTP</button>
+</div>
+
+</body>
+</html>

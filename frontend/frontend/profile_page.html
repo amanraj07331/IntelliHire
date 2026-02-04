@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Data</title>
+    <script>
+        async function fetchData(email) {
+            try {
+                const response = await fetch(`http://localhost:8000/get_profile_data/email?email=${email}`, {
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const data = await response.json();
+                console.log(data);
+                const users = data; // Directly assign the response data to users
+                
+                // Find the user with the matching email
+                if (users) {
+                    document.getElementById('userDetails').innerHTML = `
+                        <h3>Name: ${users.name}</h3><br>
+                        <p>Email: ${users.email}</p><br>
+                        <p>Address: ${users.address}</p><br>
+                    `;
+                } else {
+                    document.getElementById('userDetails').innerHTML = '<p>No user found with the provided email.</p>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div id="userDetails">
+    <h2>Loading...</h2>
+</div>
+
+<!-- Example email, replace this with actual email retrieval logic -->
+<input type="hidden" id="email" value="abc@gmail.com">
+
+<script>
+    const email = document.getElementById('email').value;
+    fetchData(email);
+</script>
+
+</body>
+</html>

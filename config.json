@@ -1,0 +1,12 @@
+{   
+    "db_host": "localhost",
+    "db_user": "postgres",
+    "db_password": "",
+    "db_name": "career",
+
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 587,
+    "hr_email": "your.hr.email@gmail.com",
+    "hr_password": "abcd efgh ijkl mnop",
+    "email_subject": "Test OTP"
+}

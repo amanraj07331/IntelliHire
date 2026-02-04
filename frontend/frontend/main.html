@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Data</title>
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('http://localhost:8000/get_user_data');
+                const data = await response.json();
+                const users = data.users; // Assuming the JSON response has a 'users' array
+                document.getElementById('userList').innerHTML = users.map(user => `
+                    <div>
+                        <h3>Name: ${user.name}</h3><br>
+                        <p>Email: ${user.email}</p><br>
+                        <p>Address: ${user.address}</p><br>
+                    <hr>
+                `).join('');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div id="userList">
+    <h2>Loading...</h2>
+</div>
+
+<script>
+    fetchData();
+</script>
+</body>
+</html>

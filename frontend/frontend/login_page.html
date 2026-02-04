@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login Page</title>
+    <script>
+        // Function to submit the data
+        function submitData(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+
+            fetch('http://localhost:8000/profile_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, phone, email, address }),
+            })
+           .then(response => response.json())
+           .then(data => {
+                console.log('Success:', data);
+                window.location.href = 'http://localhost:5500/frontend/profile_page.html'; // Navigate to success page
+            })
+           .then(data => console.log('Success:', data))
+           .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+
+<h1>Login Page</h1>
+
+<form onsubmit="submitData(event)">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required><br>
+    
+    <label for="phone">Phone:</label><br>
+    <input type="tel" id="phone" name="phone" required><br>
+
+    <label for="name">Email:</label><br>
+    <input type="text" id="email" name="email" required><br>
+    
+    <label for="address">Address:</label><br>
+    <input type="text" id="address" name="address" required><br>
+    
+    <input type="submit" value="Submit Profile">
+</form>
+
+</body>
+</html>
