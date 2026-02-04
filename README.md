@@ -15,5 +15,4 @@ The platform supports secure authentication, resume parsing, job CRUD operations
 - Structured extraction of skills, experience, and profile data  
 - Application submission and tracking  
 
-## 🏗️ Project Architecture
 
